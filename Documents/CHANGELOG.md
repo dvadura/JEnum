@@ -1,4 +1,59 @@
 ===============================================================================================
+# Add Claude Code skill installation instructions to INSTALL.md
+
+DATE :: 2026-02-20 :: 17:50 (UTC: 01:50)
+
+## Summary
+
+Added section 5 "Claude Code skill" to `Documents/INSTALL.md` documenting how to install
+the jenum skill into a project using `jenum.claude_init()`, including force-overwrite and
+custom project-dir variants, and how to invoke the skill in Claude Code.
+
+### Files changed
+
+- **`Documents/INSTALL.md`** — new section 5 before the Uninstall section.
+
+===============================================================================================
+# Add Claude Code skill and claude_init to jenum
+
+DATE :: 2026-02-20 :: 17:45 (UTC: 01:45)
+
+## Summary
+
+Added Claude Code skill support to `jenum.py` following the same pattern as PyKit's
+`claude_init`. The library is now self-contained with an embedded skill that teaches
+Claude how to work with `DEnum` and `MDEnum`.
+
+### What changed
+
+- **`Source/jenum.py`** — added three public functions and an embedded skill string:
+  - `_JENUM_SKILL` — the full Claude Code skill as an embedded markdown string, so
+    the single-file library carries its own skill content without external data files.
+  - `claude_skill()` — returns the skill markdown string directly.
+  - `install_claude_skills(project_dir, force)` — writes `SKILL.md` to
+    `<project_dir>/.claude/skills/jenum/`.
+  - `claude_init(project_dir, force)` — convenience wrapper; installs skills and
+    reports results. Mirrors `pykit.claude_init()` in interface and behaviour.
+  - `__all__` updated to include the three new public names.
+
+- **`.claude/skills/jenum/SKILL.md`** — installed into this project by running
+  `jenum.claude_init()`.  Immediately visible to Claude Code as the `jenum` skill.
+
+### Skill content covers
+
+  - All four constant declaration styles (bare tuple, `body()`, inline subclass,
+    `@override` decorator)
+  - Core instance API (`name`, `ordinal`, `values()`, `value_of()`, `from_ordinal()`)
+  - `MDEnum` mutability rules with examples
+  - Common patterns: dispatch without if/elif, constructor args, mixed ordinals,
+    state-machine with MDEnum
+  - Full error reference table
+
+### Tests
+
+All 124 existing tests continue to pass (no behaviour changes).
+
+===============================================================================================
 # Package rename to jenum, Dispatch Enum naming, INSTALL.md
 
 DATE :: 2026-02-20 :: 17:10 (UTC: 01:10)

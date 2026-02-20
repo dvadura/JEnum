@@ -121,6 +121,41 @@ cd Test && python3 -m pytest . -v
 
 ---
 
+## 5. Claude Code skill
+
+`jenum` ships with a built-in Claude Code skill that teaches Claude how to create and
+use `DEnum` and `MDEnum` classes.  Install it once per project from a Python shell or
+script:
+
+```python
+import jenum
+jenum.claude_init()
+```
+
+This writes `.claude/skills/jenum/SKILL.md` into your project root.  Claude Code picks
+it up automatically on the next session start.
+
+To overwrite an existing installation:
+
+```python
+jenum.claude_init(force=True)
+```
+
+To install into a specific project directory:
+
+```python
+from pathlib import Path
+jenum.claude_init(project_dir=Path("/path/to/your/project"))
+```
+
+Once installed, activate the skill from within Claude Code:
+
+```
+/jenum <describe what you want to build or fix>
+```
+
+---
+
 ## Uninstall
 
 ```bash
