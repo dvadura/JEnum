@@ -1,0 +1,93 @@
+{
+   dsl_version: 1,
+
+   loggers: {
+      default: 'build',
+
+      build: [{
+            enabled: true,
+            name: 'devel',
+            facility: 'stream',
+            channel: 'stderr',
+            level: 'info',
+         },
+      ]
+   },
+
+   project: {
+      config: {
+         pkgname: 'jenum',
+
+         // typically located in the project root directory. Can be overriden if necessary.
+         // depimap: './imap.yml',
+
+         // include is implicit when the ProjectConfig object is initialized.
+         // __include__ : 'Config/defaults.js5'
+
+         flavors: [
+            { name: 'Python3', tag: 'py3' },
+         ],
+
+         architectures: [
+            { name: 'None', tag: 'none' }
+         ],
+
+         wrappings: {
+            buildid: {
+               prefix  : ',',
+               // embed the flavor tag (py3) inside the buildid component
+               template: '{prefix}{material}',
+               material: 'flavor',
+               values  : 'flavors',
+               bundle  : null
+            }
+         },
+
+         force_architecture: 'None',
+         force_platform: 'Any',
+
+         pkgname_format: '{pkgname}.lower()',
+         pkgbase_format: '{pkgname}-{pkgversion}',
+         pkgpab_format : '{architecture}-{platform}',
+         target_format : '{pkgbase}-{buildid}-{pkgpab}.{archetype}',
+      },
+
+      artifacts: {
+         // List of top level bundles that we want to build, 'auto' or empty will build every defined bundle.
+         // Use 'bif do -l' to see the numbered list of generated targets.
+         //
+         filter: ['auto'],
+
+         targets:[
+            // wrap as wheel library for install/publish to PyPI
+            {  archetype: ['Library'],
+               'platform!': 'Any',
+               'architecture!': 'None',
+               'build!': ['Release'],
+               flavor: [['Python3','Test'], 'Python3'],
+               wrapper: ['Wheel'],
+            },
+         ],
+
+         tests: {},
+      },
+   },
+
+   // Deployment configurations. This defines which bundles should be delivered to each of the deployment
+   // environments.
+   deployments: {
+      local: [],    // local dev environment
+      test: [],     // smoke/fire/inferno/integ test environment
+      pipeline: [], // deploy an updated pipeline configuration
+      qa: [],       // alpha test environment
+      beta: [],     // beta pre-prod environment
+      prod: [],     // production environment
+   },
+
+   // The pipeline defines trigger events for auto/manual deployment between deployment stages,
+   // It also maps each stage to an infrastructure availability zone.
+   //
+   // Availability zones could be custom, virtual, AWS, Azure, or ...
+   pipelines: {
+   }
+}

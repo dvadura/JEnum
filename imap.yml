@@ -1,0 +1,90 @@
+# See this YAML reference for info on specifying YAML values.
+#
+#     https://learnxinyminutes.com/docs/yaml/
+#
+# Refer to Documents/BifManual/MANUAL.md for Bif configuration information.
+#
+
+# ==============================================================================================
+# Global Environment Settings
+# ==============================================================================================
+
+# ==============================================================================================
+# TEST Artifacts, dependency definitions
+# ==============================================================================================
+#     ---------
+#     Python
+#     ---------
+#     jenum-1.0-{buildid}-py3,tst-none-any.lib.whl
+#               {1}            {2}  {3}
+#
+# runs: python3 -m pytest . in Test/ directory
+#
+env:
+  PY_ART_NAME: '{BIF_ART_NAME}.lower()'
+
+'{PY_ART_NAME}-{BIF_ART_VERSION}-_-py3,tst-_-_.lib.whl' :
+  adir: '{BIF_PRJ_ROOTDIR}'
+  bdir: '{BIF_PRJ_TESTDIR}'
+  needs: 'pytest.ini'
+  virtual: true
+  tool: python3
+  options:
+  - '-m'
+  - 'pytest'
+  args:
+  - '.'
+
+pytest.ini:
+  adir: '{BIF_PRJ_TESTDIR}'
+
+
+# ==============================================================================================
+# Python dependency definitions
+# ==============================================================================================
+#     ---------
+#     Python
+#     ---------
+#     jenum-1.0-{buildid}-py3-none-any.lib.whl    (final artifact in Artifacts/)
+#     jenum-1.0-{buildid}-py3-none-any.whl        (intermediate wheel in Build/)
+#              {1}            {2}  {3}
+#
+'{PY_ART_NAME}-{BIF_ART_VERSION}-_-py3-_-_.lib.whl' :
+  adir: '{BIF_PRJ_ARTIFACTDIR}/{2}/{3}'
+  bdir: '{BIF_PRJ_BUILDDIR}/{2}/{3}'
+  env:
+    JENUM_BUILDID:  '{1}'
+    JENUM_BUILDDIR: '{BIF_PRJ_BUILDDIR}/{2}/{3}'
+    JENUM_BUILD:    '{JENUM_BUILDID}-py3'
+    JENUM_PACKAGE:  '{PY_ART_NAME}-{BIF_ART_VERSION}'
+  yields: ['@', '{JENUM_PACKAGE}-{JENUM_BUILD}-src.tar.gz']
+  needs:  '{JENUM_PACKAGE}-{JENUM_BUILD}-{2}-{3}.whl'
+  uses:   '{JENUM_PACKAGE}.tar.gz'
+  steps:
+  - tool: copy
+    options: ['{#}', '{@}']
+  - tool: bash
+    options: ['-c', ['/bin/cp', '{##}', '{YIELDS}[1]']]
+
+'{PY_ART_NAME}-{BIF_ART_VERSION}-_-py3-_-_.whl':
+  adir: '{JENUM_BUILDDIR}'
+  bdir: '{BIF_PRJ_ROOTDIR}'
+  yields: ['{JENUM_PACKAGE}.tar.gz']
+  needs:
+  - '#{PY_ART_NAME}_mod'
+  uses:
+  - '{BIF_PRJ_ROOTDIR}/pyproject.toml'
+  - '{BIF_PRJ_ROOTDIR}/setup.py'
+  exports:
+  - 'BIF_BUILD_BUILDID'
+  tool: python3
+  options:
+  - '-m'
+  - 'build'
+  - '--outdir'
+  - '{JENUM_BUILDDIR}'
+
+'{PY_ART_NAME}_mod':
+  adir: '~/Source'
+  needs:
+  - '{PY_ART_NAME}.py'

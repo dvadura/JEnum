@@ -1,0 +1,350 @@
+// Default Project/config settings and values.
+//
+// A user can override or extend using:
+//
+//    Project : { config : { variable[(+)-!] : [] ... }}}
+//
+// extension syntax.
+//
+
+{
+   // Silicon architecture platform, needed to decide on code emitted by tooling
+   architectures : [
+      { name: 'AMD32',     tag: 'i386'    },
+      { name: 'AMD64',     tag: 'amd64'   },
+      { name: 'ARMV7L',    tag: 'armv7;'  },
+      { name: 'ARM64',     tag: 'aarch64' },
+      { name: 'I386',      tag: 'i386'    },
+      { name: 'IBMZ',      tag: 's390x'   },
+      { name: 'PPC64LE',   tag: 'ppc64le' },
+      { name: 'RISC-V',    tag: 'riscv64' },
+      { name: 'Universal', tag: 'uni'     },
+      { name: 'X86_64',    tag: 'amd64'   },
+      { name: 'X86_32',    tag: 'i386'    },
+   ],
+
+   // The different runtime environments, list is not exhaustive, 'Any' should be used for
+   // independent code (e.g. python scripts)
+   platforms : [
+      { name:  'Any',       tag: 'any' },
+      { name:  'Android',   tag: 'and' },
+      { name:  'CP/M',      tag: 'cpm' },
+      { name:  'Darwin',    tag: 'osx' },
+      { name:  'FireOS',    tag: 'fos' },
+      { name:  'FreeBSD',   tag: 'fbd' },
+      { name:  'Fuchsia',   tag: 'fuc' },
+      { name:  'GNU',       tag: 'gnu' },
+      { name:  'iOS',       tag: 'ios' },
+      { name:  'Linux',     tag: 'lnx' },
+      { name:  'IBMAIX',    tag: 'aix' },
+      { name:  'MacOS',     tag: 'osx' },
+      { name:  'MSDOS',     tag: 'dos' },
+      { name:  'OS/2',      tag: 'os2' },
+      { name:  'OSX',       tag: 'osx' },
+      { name:  'QNX',       tag: 'qnx' },
+      { name:  'ReactOS',   tag: 'ros' },
+      { name:  'Solaris',   tag: 'sol' },
+      { name:  'SunOS',     tag: 'sos' },
+      { name:  'Unix',      tag: 'unx' },
+      { name:  'WearOS',    tag: 'wos' },
+      { name:  'Windows',   tag: 'win' },
+      { name:  'zOS',       tag: 'zos' },
+      { name:  'zTPF',      tag: 'tpf' },
+      { name:  'zVSE',      tag: 'vse' }
+   ],
+
+   // The different state archetypes, add new ones to your hearts content
+   archetypes : [
+      { name: 'BifBundle',     tag: 'bbn' },
+      { name: 'Binary',        tag: 'bin' },
+      { name: 'Documentation', tag: 'doc' },
+      { name: 'Executable',    tag: 'exe' },
+      { name: 'Library',       tag: 'lib' },
+      { name: 'Resources',     tag: 'res' },
+      { name: 'Source',        tag: 'src' },
+   ],
+
+   // Builds are the versions of the final state that are packaged up for deployment and testing.
+   // Build types are used to indicate the type of build that was performed in order to yield the
+   // artifact that is being packaged, deployed, tested, etc.
+   builds : [
+      { name: 'Debug',    tag: 'DBG' },
+      { name: 'Internal', tag: 'INT' },
+      { name: 'Release',  tag: 'REL' },
+   ],
+
+   // Wrappers are packaging paper.
+   //
+   // In some cases a wrapper will be applied on top of a prior wrapper (e.g. compression,
+   // or encryption). In those cases the standard is to use chained wrapper suffixes.
+   //
+   // For example: an encrypted, gzipped tar file might look like:
+   //
+   //    artifactid-buildid.tar.gz.enc
+   //
+   // Thereby indicating that to unpack the content you must decrypt, gunzip, and untar.
+   //
+   wrappers : [
+      { name: 'Ami',       tag: 'ami' },
+      { name: 'Azure',     tag: 'azr' },
+      { name: 'BZip2',     tag: 'bz2' },
+      { name: 'DebPkg',    tag: 'dpk' },
+      { name: 'Dmg',       tag: 'dmg' },
+      { name: 'Encrypted', tag: 'enc' },
+      { name: 'GoogleGCP', tag: 'gcp' },
+      { name: 'Gzip',      tag: 'gz'  },
+      { name: 'Iso9660',   tag: 'iso' },
+      { name: 'Jar',       tag: 'jar' },
+      { name: 'Package',   tag: 'pkg' },
+      { name: 'Rpm',       tag: 'rpm' },
+      { name: 'Shar',      tag: 'sh'  },
+      { name: 'Tar',       tag: 'tar' },
+      { name: 'Wheel',     tag: 'whl' },
+      { name: 'Zip',       tag: 'zip' },
+   ],
+
+   // Flavors, allow you to state a modified flavor of the product, the defined flavors are:
+   //
+   // Keyed     -- for software that uses an external key mechanism for licensing
+   // Keyless   -- for software that normally uses a key, and is explicitly keyless
+   // Test      -- marks the artifact as a test artifact
+   //
+   flavors : [
+      { name: 'Keyed',      tag: 'key' },
+      { name: 'Keyless',    tag: 'kls' },
+      { name: 'Test',       tag: 'tst' },
+      { name: 'Python',     tag: 'py' },
+      { name: 'CLang',      tag: 'cl' },
+      { name: 'Go',         tag: 'go' },
+      { name: 'Rust',       tag: 'ru' },
+      { name: 'Java',       tag: 'jav' },
+      { name: 'IPadOS',     tag: 'is' },
+      { name: 'WatchOS',    tag: 'ws' },
+      { name: 'AppleTV',    tag: 'ts' },
+      { name: 'AppleVPro',  tag: 'vs' },
+   ],
+
+   // devops phase definitions. Used to tag devops phases to tools so that the tool can be checked
+   // for version correctness. The tags are not used here, but are needed for parseability.
+   devops : [
+      { name: 'Build',      tag: 'bld' },
+      { name: 'Test',       tag: 'tst' },
+      { name: 'Deploy',     tag: 'dpl' },
+   ],
+
+   deployments: [
+      { name: 'Local',      tag: 'loc' },
+      { name: 'Test',       tag: 'tst' },
+      { name: 'QA',         tag: 'qa'  },
+      { name: 'Beta',       tag: 'bet' },
+      { name: 'Prod',       tag: 'prd' },
+      { name: 'Pipeline',   tag: 'pip' },
+   ],
+
+   // Finally, here are the various intermediate tags and ids and their definitions:
+   //
+   // Common Artifact format: {pkgbase}  -{pkg_pab}      -{buildid}    .{archetype}  {wrapper}
+   // For example: Artifact   Bif,1.0    -osx.x86_64.DBG -2023c12_2201 .bin          .tar.gz
+   // For example: Binary     Bif,1.0    -osx.x86_64.DBG -2023c12_2201 .bin
+   // For example: Bundle     Bif,1.0    -osx.x86_64.DBG -2023c12_2201 .bbn
+   //
+   //   Bif,1.0-win.arm64.DBG-2023c12_2201.bbn
+   //   Bif,1.0-win.arm64.DBG-2023c12_2201.exe
+   //   Bif,1.0-win.arm64.DBG-2023c12_2201.src.zip
+   //
+   // - same format for different architecture combinations
+   //     Bif+gtp,1.0-osx.x86_64.DBG-2023c12_2201-bin.tar.gz
+   //     Bif,1.0-osx.x86_64.DBG-2023c12_2201-bin.tar.gz
+   //     Bif,1.0-win.arm64.DBG-2023c12_2201-bin.tar.gz
+   //
+   //     Bif,1.0-osx.x86_64.REL-2023c12_2201-bin.tar.gz
+   //     Bif,1.0-win.x86_64.REL-2023c12_2201-bin.tar.gz
+   //
+   // - same artifact,build, different build types, universal binary running in any runtime environment
+   //     Bif,1.0-any.uni.REL-2023c12_2201-bin.tar.gz
+   //     Bif,1.0-any.uni.DBG-2023c12_2201-bin.tar.gz
+   //
+   // - same artifact, different flavors, universal binary running in any runtime environment
+   //     Bif+key,1.0-any.uni.REL-2023c12_2201-bin.tar.gz
+   //     Bif+gtp+kls,1.0-any.uni.REL-2023c12_2201-bin.tar.gz
+   //,
+   pkgflavor_format    : '{pkgname}',
+   pkgversion_format   : '{version}',
+   pkgbase_format      : '{pkgflavor},{pkgversion}',
+   pfmarch_format      : '{platform}.{architecture}',
+   pkgpab_format       : '{pfmarch}.{build}',
+   buildid_format      : '{builddate}_{buildtime}',
+   target_format       : '{pkgbase}-{pkgpab}-{buildid}.{archetype}',
+
+   // Define default wrappings, and which id's they affect, syntax as follows:
+   //
+   //   wrappings: {
+   //       termid : {
+   //           template : '.{material}',
+   //           material : <buildspec_ref>    // eg. flavors
+   //       },
+   //       ...
+   //   }
+   //
+   // So in the wrapping definition below: pkgbase is wrapped iff 'flavor' is defined as a list in the Target spec.
+   //    flavor : [ w1, w2 ]
+   // will wrap 'pkgbase' with .w1 and .w2 individually (i.e. <pkgname>+w1 and <pkgname>+w2
+   //
+   // if however flavors has a value of:
+   //    flavors : [[ w1, w2 ]] then the wrapping will be containerized and will result in <pkgname>+w1+w2
+   // containerized wraps are applied in the order specified.
+   //
+   wrappings: {
+      // pkgbase has a wrapping
+      pkgflavor : {
+         // the wrapper prefix, if any
+         prefix: '+',
+         // the format of the wrapper, in this case plus followed by deduced material value
+         template : '{prefix}{material}',
+         // the attribute in the target spec that specifies the materials to wrap with
+         material : 'flavor',
+         // the dictionary to use for looking up the tag that we should use for the given material
+         values   : 'flavors',
+         // Specifies what key to use to lookup Bundle suffixes, when this item is wrapped and a bundle
+         // is requested. A bundle is requested by setting bundle:true in the target specification.
+         bundle   : null,
+      },
+
+      // target has a wrapping, targets are defined as entries in the 'targets' section of bif.js5
+      target : {
+         prefix    : '.',
+         template  : '{prefix}{material}',
+         material  : 'wrapper',
+         values    : 'wrappers',
+         // Specifies what key to use to lookup Bundle suffixes, when this item is wrapped and a bundle
+         // is requested. A bundle is requested by setting bundle:true in the target specification.
+         // In this case if a target entry has bundle:true then the wrapper will be config::wrappers['Bundle'];
+         // which resolves to 'bbn' as defined herein.
+         bundle    : 'Bundle'
+      },
+   },
+
+   // Tool definitions, only tools defined in each of these phases can be specified for use in that phase.
+   // Customizable in the .js5 top level file. If you want to use a general scripting language during the state
+   // then you need specify the tool in the top level .js5 file under the appropriate state phase.
+   tools : {
+      echo : {
+         // tool is a plugin with implementation in Config/plugins
+         // default is False, but is true for echo.
+         plugin: true,
+
+         // if true, bif suppresses all output produced by running the tool
+         // default is False.
+         silent: false,
+
+         // if true does not echo the tool and its arguments before running the tool
+         // default is False.
+         hidden: true,
+
+         // if true ignores any errors produced by evaluation of the tool
+         ignore: false,
+
+         // specify max length of time to run the tool before giving up, 0 means no timeout is in
+         // seconds.
+         timeout: 0,
+      },
+      gitkeep : {
+         plugin: true,
+         hidden: true,
+      },
+      touch : {
+         plugin: true,
+         hidden: true,
+      },
+      copy : {
+         plugin: true,
+         hidden: true,
+      },
+      bundle : {
+         plugin: true,
+         hidden: true,
+      },
+      bash : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+      },
+      python3 : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+      },
+      pytest : {
+         plugin: true,
+      },
+      make : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+         verbose: ['-d'],
+         debug:   ['-d'],
+         devops:  ['Build'],
+      },
+      cmake : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+         verbose: ['-v'],
+         debug:   ['-d'],
+      },
+      gradle : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+         verbose: ['--console'],
+         debug:   ['-d'],
+         devops:  ['Build'],
+      },
+      autoconf: {
+         cmd:     './configure',
+         path:    ['.'],
+         devops:  ['Build']   // can be any combination of state, unit, integ, deploy, or *
+      },
+      javac : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+         verbose: ['-verbose'],
+         debug:   ['-d'],
+         devops:  ['Build'],
+      },
+      jar : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+         verbose: ['-v'],
+         debug:   ['-d'],
+         devops:  ['Build'],
+      },
+      tar : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+      },
+      ar : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+      },
+      gcc : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+      },
+      'g++' : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+      },
+      clang : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+      },
+      'clang++' : {
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         args:    [],
+      },
+      nuitka : {
+         cmd:     'python3',
+         path:    ['{BIF_TOOLBOX_PATH}'],
+         verbose: [],
+         debug:   [],
+         options: ['-m', '{TOOLID}'],
+         devops:  ['Build'],
+      },
+   },
+}

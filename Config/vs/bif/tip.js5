@@ -1,0 +1,19 @@
+// Warning: DO NOT EDIT MANUALLY
+//
+// Simply adding a need here is not sufficient to attach the dependency to the project.
+// This file is generated and maintained using bif commands.
+// All times are UTC
+//
+{
+   ctime    : '2026-02-20 15:14:22.116153+00:00',
+   ctime_ts : '1771600462.116153',
+   mtime_ts : '1771607088.469528',
+   pkgname  : 'JEnv',
+   version  : '1.0',
+   buildid  : '2026220_1541',
+   event    : 'tip',
+   tag      : '',
+   block    : '410',
+
+   needs    : [],
+}

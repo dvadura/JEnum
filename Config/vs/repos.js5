@@ -1,0 +1,9 @@
+{
+   repos: {
+      master: {
+         url: 'https://localhost/',
+         user: '',
+         spaces: ['bif'],
+      }
+   }
+}

@@ -1,0 +1,2 @@
+This is the root of the events JSON config files.
+Do not remove this file so that git keeps the directory.
